@@ -73,6 +73,8 @@ def save_ad_info(ad_info)
         address = ad_info[:address]
         cost = ad_info[:week_cost] || "-1"
         bubble_id = ad_info[:ad_id]
+        # TODO: Make sure the output file is all valid unicode.
+        # TODO: Convert HTML-safe text into normal text (eg `&amp;` -> `&`)
         file.puts("#{url_id},#{ad_type},\"#{address}\",#{cost},#{bubble_id}")
     end
 end
