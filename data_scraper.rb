@@ -8,7 +8,7 @@ COOKIES = {
     # "PHPSESSID" => "fc8mo1kphec4une6bh3njemci0",
     "LONGSESS" => "U2lnbmtpY2tcRm91bmRhdGlvblxTZWN1cml0eVxBdXRoZW50aWNhdGlvblxVc2VyXFVzZXI6Ykc5MWNITjFhbUV3TTBCb2IzUnRZV2xzTG1OdmJRPT06MTczMjA5ODMzMDpkZDgxMmQ5MDgyZmRlNTZhMDkwYmRjM2JhYTMyNzlmM2U3MTk0M2UzNmZiOWQ2MzNkNTcxY2U2YTY2Y2UxZTk1",
 }
-OUTPUT_FILENAME = "adverts.csv"
+OUTPUT_FILENAME = "adverts_partial_address.csv"
 
 def get_ad_http_response(id)
     uri = URI("http://buy.bubbleoutdoor.com/search/tooltip/#{id}")
@@ -38,7 +38,7 @@ def extract_info_from_html(id, html_text)
         info[:ad_id] = match[1].strip
     end
     html_text.match(/<span class="weekprice text-xlg text-weight-regular">(.+?)<\/span>/m) do |match|
-        info[:week_cost] = match[1].strip
+        info[:week_cost] = match[1].strip.gsub(",", "").gsub("£", "")
     end
     return info
 end
@@ -54,8 +54,15 @@ def get_ad_info(id)
 end
 
 def refresh_ad_info_file
+    CSV_HEADERS = [
+        "URL ID",
+        "Advert Type",
+        "Address",
+        "Weekly Cost",
+        "BubbleOutdoor ID",
+    ] 
     File.open(OUTPUT_FILENAME, 'w') do |file|
-        file.puts("URL ID, Advert Type, Address, Weekly Cost, BubbleOutdoor ID")
+        file.puts(CSV_HEADERS.join(","))
     end
 end
 
@@ -73,7 +80,8 @@ end
 # If the following line is uncommented, the entire data file is reset to empty when this file is run.
 # refresh_ad_info_file
 
-1.upto(200_000) do |i|
-    ad_info = get_ad_info(i)
-    save_ad_info(ad_info) unless ad_info.nil?
-end
+# If the follwing block is uncommented, the first 200,000 adverts will be scraped and added to the file.
+# 1.upto(200_000) do |i|
+#     ad_info = get_ad_info(i)
+#     save_ad_info(ad_info) unless ad_info.nil?
+# end
