@@ -15,21 +15,20 @@ It contains the following values
 There are also URLs that allow more information about an advert, including its postcode, and its dimensions, and its estimated view count ("Impressions per week").
 These URLs are queried using the BubbleOutdoor ID.
 
-# Data Acquisition (sp?)
+# Data Acquisition
 
-There is an inital script that goes numerically through IDs from 1 upto 200,000 and scrapes initial ID from the bubbleoutdoor website,
+There is an inital script that goes numerically through IDs and scrapes the corresponding internal BubbleOutdoor ID and some initial advert data from their website,
 populating the `adverts_partial_address,csv` data file.
 
-Before I realised that there was a way to get the postcode on the buble outdoor website, 
-I originally planned to use a geocoding service to identify the postcode from the (sometimes partial) addresses.
+Then I realised that there was a URL, which provided details about an advert given its BubbleOutdoor ID. Using this, I got the postcodes for each advert.
 
-Then I realised that there was the `` URL, which provided details about an advert. Using this, I got postcodes.
+# Data Analysis
+
+Other members of AdBlock Leeds, with more experience in carbon emissions and energy consumption, were involved in the analysis of the data. Their findings are written up in [an article on the AdBlock Leeds website](https://adblockleeds.wordpress.com/2021/01/17/the-ads-in-leeds-consume-as-much-electricity-as-8000-people/).
+
+# Future Development
 
 I'm hoping that all adverts of a specific advert type will have the same properties (dimensions, energy usage, etc.), 
 but I think I should have, while getting the postcodes, also gotten dimensions, and the Impressions per week count.
 
 This is a small bit of potential future work, but running the scraper against all ~120k adverts took a couple of days.
-
-# Data Analysis
-
-
